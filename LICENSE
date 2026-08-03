@@ -19,3 +19,11 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+---
+
+Exception: The "42" logo model files (resources/42.obj and resources/42.mtl)
+are the property of 42 (42 Network / École 42) and are NOT covered by the
+MIT License above. They are included in this repository solely as sample
+assets for this project and may not be reused, redistributed, or repurposed
+outside of it.
