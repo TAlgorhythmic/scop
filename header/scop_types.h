@@ -34,13 +34,19 @@ typedef struct s_setup {
 	u32 height;
 } ScopSetup;
 
-typedef struct s_ctx {
-	GLFWwindow* win;
-} ScopContext;
+typedef struct s_ctx ScopContext;
+typedef struct s_renderer ScopBackend;
 
-typedef struct s_renderer {
-	void* (*renderer_preinit)(ScopContext*);
-	void* (*renderer_init)(ScopContext*);
-} ScopBackend;
+struct s_ctx {
+	GLFWwindow* win;
+	ScopSetup* setup;
+	ScopBackend* rend;
+};
+
+struct s_renderer {
+	void (*renderer_preinit)();
+	void (*renderer_init)(ScopContext*, GLFWglproc);
+	void (*renderer_destroy)();
+};
 
 #endif

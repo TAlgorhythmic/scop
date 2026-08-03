@@ -1,13 +1,11 @@
+#include "renderer_opengl/renderer.h"
+#include "renderer_vulkan/renderer.h"
 #include "scop_types.h"
 #include "win_handler/win_handler.h"
 #include <GLFW/glfw3.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-void loop() {
-
-}
 
 ScopRenderer choose_renderer(const char* renderer) {
 	if (!renderer) return VULKAN;
@@ -64,8 +62,29 @@ ScopSetup parse_setup(char** argv) {
 	};
 }
 
+void loop(ScopContext* ctx) {
+
+}
+
 int main(int argc, char** argv) {
 	(void) argc;
 	ScopSetup setup = parse_setup(argv);
+	scop_window_preinit(&setup);
+	ScopBackend rend;
+	if (setup.renderer == VULKAN)
+		rend = create_vk_backend();
+	else rend = create_gl_backend();
+	rend.renderer_preinit();
 	GLFWwindow* window = scop_window_create(&setup);
+
+	ScopContext ctx = {
+		.win = window,
+		.setup = &setup,
+		.rend = &rend,
+	};
+
+	rend.renderer_init(&ctx, glfwGetProcAddress);
+
+	loop(&ctx);
+	rend.renderer_destroy();
 }

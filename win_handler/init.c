@@ -42,7 +42,6 @@ bool scop_window_preinit(ScopSetup* setup) {
 GLFWwindow* scop_window_create(const ScopSetup* setup) {
 	GLFWwindow* win = glfwCreateWindow(setup->width, setup->height, APP_TITLE, NULL, NULL);
 	if (!win) return NULL;
-	glfwMakeContextCurrent(win);
 
 	return win;
 }
