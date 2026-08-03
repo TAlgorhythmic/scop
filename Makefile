@@ -1,22 +1,24 @@
 NAME		= scop
 CC			= cc
-FLAGS		= -Wall -Wextra -Werror -MMD -MP -O3
+FLAGS		= -Wall -Wextra -Werror -MMD -O3 -std=gnu17
 
 SRC_OPENGL_DIR			= renderer_opengl
 SRC_VULKAN_DIR			= renderer_vulkan
 SRC_WIN_HANDLER_DIR		= win_handler
+SRC_UTILS_DIR			= utils
 HDRS					= header
 
-		  $(wildcard $(SRC_WIN_HANDLER_DIR)/*.c) \
-		  $(wildcard $(SRC_OPENGL_DIR)/*.c) \
-		  $(wildcard $(SRC_VULKAN_DIR)/*.c)
+SRC = main.c $(wildcard $(SRC_WIN_HANDLER_DIR)/*.c) \
+	  $(wildcard $(SRC_OPENGL_DIR)/*.c) \
+	  $(wildcard $(SRC_VULKAN_DIR)/*.c) \
+	  $(wildcard $(SRC_UTILS_DIR)/*.c)
 
 OBJ_DIR	= .build
 OBJ		= $(SRC:%.c=$(OBJ_DIR)/%.o)
 DEPS	= $(OBJ:.o=.d)
 
 INCLUDES	= -I$(HDRS)
-LIBS		= -lglfw -lm -lGL -lvulkan
+LIBS		= -lglfw -lm -lGL
 
 all: $(NAME)
 

@@ -6,12 +6,15 @@ static void error_callback(int code, const char* description) {
 	fprintf(stderr, "Error code %d: %s\n", code, description);
 }
 
-const GLFWwindow* scop_window_create(int width, int height) {
+GLFWwindow* scop_window_create(const ScopSetup* setup) {
 	if (!glfwInit()) return NULL;
 	glfwSetErrorCallback(error_callback);
 
+	GLFWwindow* win = glfwCreateWindow(setup->width, setup->height, APP_TITLE, NULL, NULL);
+	if (!win) return NULL;
+	glfwMakeContextCurrent(win);
 
-	GLFWwindow* win = glfwCreateWindow(width, height, APP_TITLE, GLFWmonitor *monitor, GLFWwindow *share);
+	return win;
 }
 
 void scop_glfw_destroy(GLFWwindow* win) {
