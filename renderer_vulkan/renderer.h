@@ -3,6 +3,7 @@
 
 #include "scop_types.h"
 
+void renderer_vk_load_symbols();
 ScopBackend create_vk_backend();
 
 #endif
