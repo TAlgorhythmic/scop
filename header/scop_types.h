@@ -38,4 +38,9 @@ typedef struct s_ctx {
 	GLFWwindow* win;
 } ScopContext;
 
+typedef struct s_renderer {
+	void* (*renderer_preinit)(ScopContext*);
+	void* (*renderer_init)(ScopContext*);
+} ScopBackend;
+
 #endif

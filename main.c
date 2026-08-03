@@ -1,4 +1,5 @@
 #include "scop_types.h"
+#include "win_handler/win_handler.h"
 #include <GLFW/glfw3.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -67,5 +68,4 @@ int main(int argc, char** argv) {
 	(void) argc;
 	ScopSetup setup = parse_setup(argv);
 	GLFWwindow* window = scop_window_create(&setup);
-
 }
