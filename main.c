@@ -68,6 +68,7 @@ ScopSetup parse_setup(char** argv) {
 void loop(ScopContext* ctx) {
 	ScopBackend r = *ctx->rend;
 
+	r.renderer_reset_color();
 	while (!glfwWindowShouldClose(ctx->win)) {
 		r.renderer_reset();
 		glfwSwapBuffers(ctx->win);

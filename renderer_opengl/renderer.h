@@ -4,11 +4,6 @@
 #include "scop_types.h"
 #include <GL/glcorearb.h>
 
-/*
-** Every OpenGL 3.3 core entry point the renderer needs, loaded at runtime.
-** Grouped by purpose: framebuffer state, pipeline state, shaders, programs,
-** uniforms, buffers/vertex arrays, textures, drawing, and queries.
-*/
 #define GL_FUNCS(X) \
 	/* framebuffer */ \
 	X(PFNGLCLEARPROC, Clear) \

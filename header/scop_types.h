@@ -51,6 +51,7 @@ struct s_renderer {
 	void (*renderer_init)(ScopContext*);
 	void (*renderer_destroy)();
 	void (*renderer_reset)();
+	void (*renderer_reset_color)();
 };
 
 typedef struct s_model {

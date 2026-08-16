@@ -23,8 +23,11 @@ void renderer_gl_destroy() {
 	
 }
 
-void renderer_gl_reset() {
+void renderer_gl_reset_color() {
 	glClearColor(0, 0, 0, 1.0f);
+}
+
+void renderer_gl_reset() {
 	glClear(GL_COLOR_BUFFER_BIT);
 }
 
@@ -34,5 +37,6 @@ ScopBackend create_gl_backend() {
 		.renderer_init = renderer_gl_init,
 		.renderer_destroy = renderer_gl_destroy,
 		.renderer_reset = renderer_gl_reset,
+		.renderer_reset_color = renderer_gl_reset_color,
 	};
 }
