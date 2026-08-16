@@ -8,18 +8,18 @@
 #include <string.h>
 
 ScopRenderer choose_renderer(const char* renderer) {
-	if (!renderer) return VULKAN;
+	if (!renderer) return OPENGL;
 
-	if (strcmp(renderer, "opengl") == 0)
-		return OPENGL;
+	if (strcmp(renderer, "vulkan") == 0 && glfwVulkanSupported())
+		return VULKAN;
 
-	return VULKAN;
+	return OPENGL;
 }
 
 bool is_fullscreen(const char* fullscreen) {
 	if (!fullscreen) return false;
 
-	if (strcmp(fullscreen, "0"))
+	if (strcmp(fullscreen, "0") == 0)
 		return false;
 
 	return true;
@@ -38,19 +38,22 @@ ScopSetup parse_setup(char** argv) {
 
 	++argv; // Discard executable name
 	for (; *argv; ++argv) {
-		if (strcmp(*argv, "--width") || strcmp(*argv, "-w")) {
+		if (strcmp(*argv, "--width") == 0 || strcmp(*argv, "-w") == 0) {
 			const char* value = argv[1];
 			if (strlen(value) > 5)
 				exit_error("Param specified is too large");
 
 			width = atoi(value);
 		}
-		if (strcmp(*argv, "--height") || strcmp(*argv, "-h")) {
+		if (strcmp(*argv, "--height") == 0 || strcmp(*argv, "-h") == 0) {
 			const char* value = argv[1];
 			if (strlen(value) > 5)
 				exit_error("Param specified is too large");
 
 			height = atoi(value);
+		} else {
+			fprintf(stderr, "Failed to parse option: %s\n", *argv);
+			exit(1);
 		}
 	}
 
@@ -63,19 +66,33 @@ ScopSetup parse_setup(char** argv) {
 }
 
 void loop(ScopContext* ctx) {
+	ScopBackend r = *ctx->rend;
 
+	while (!glfwWindowShouldClose(ctx->win)) {
+		r.renderer_reset();
+		glfwSwapBuffers(ctx->win);
+		glfwWaitEvents();
+	}
 }
 
 int main(int argc, char** argv) {
 	(void) argc;
-	ScopSetup setup = parse_setup(argv);
-	scop_window_preinit(&setup);
+	if (!scop_window_preinit()) {
+		fprintf(stderr, "Failed to initialize glfw\n");
+		return 1;
+	}
 	ScopBackend rend;
-	if (setup.renderer == VULKAN)
-		rend = create_vk_backend();
-	else rend = create_gl_backend();
+	/*if (setup.renderer == VULKAN)
+		rend = create_vk_backend();*/
+	/*else */rend = create_gl_backend();
 	rend.renderer_preinit();
+
+	ScopSetup setup = parse_setup(argv);
 	GLFWwindow* window = scop_window_create(&setup);
+	if (!window) {
+		fprintf(stderr, "Failed to initialize window\n");
+		return 1;
+	}
 
 	ScopContext ctx = {
 		.win = window,
@@ -83,8 +100,10 @@ int main(int argc, char** argv) {
 		.rend = &rend,
 	};
 
-	rend.renderer_init(&ctx, glfwGetProcAddress);
+	rend.renderer_init(&ctx);
 
 	loop(&ctx);
+
 	rend.renderer_destroy();
+	scop_glfw_destroy(ctx.win);
 }

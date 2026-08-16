@@ -9,6 +9,9 @@
 #define ENV_FULLSCREEN "SCOP_FULLSCREEN"
 #define ENV_RENDERER "SCOP_RENDERER"
 
+// Prevent glfw from pulling gl functions that causes redefinitions
+#define GLFW_INCLUDE_NONE
+
 #include <stdint.h>
 #include <stdbool.h>
 #include <GLFW/glfw3.h>
@@ -45,8 +48,13 @@ struct s_ctx {
 
 struct s_renderer {
 	void (*renderer_preinit)();
-	void (*renderer_init)(ScopContext*, GLFWglproc);
+	void (*renderer_init)(ScopContext*);
 	void (*renderer_destroy)();
+	void (*renderer_reset)();
 };
+
+typedef struct s_model {
+	int a;
+} Model;
 
 #endif
